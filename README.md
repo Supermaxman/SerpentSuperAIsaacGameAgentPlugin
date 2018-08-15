@@ -1,5 +1,6 @@
 # Super AIsaac Game Agent
-My PPO implementation for The Binding of Isaac: Afterbirth+ in the SerpentAI Monstro Boss Fight environment
+My PPO agent implementation for The Binding of Isaac: Afterbirth+ in the SerpentAI Monstro Boss Fight environment.
+See SerpentSuperAIsaacGamePlugin for the GamePlugin used for the environment.
 
 ## Gameplay
 Check my stream for live gameplay or historical VODs while training.  
