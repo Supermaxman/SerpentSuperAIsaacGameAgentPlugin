@@ -132,6 +132,8 @@ class SuperAIsaacAgent(Agent):
             self.batch_episode_count += 1
             self.boss_hp_total += boss_hp
             self.isaac_hp_total += isaac_hp
+            if isaac_hp > 0.0 and boss_hp < 1e-8:
+                self.total_wins += 1
             observations_count = len(self.observations)
             print(f'Episode: {self.current_episode}|{self.batch_episode_count}|{observations_count}/{self.memory_capacity}')
             if observations_count >= self.memory_capacity:

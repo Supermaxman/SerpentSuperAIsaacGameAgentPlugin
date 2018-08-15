@@ -7,6 +7,7 @@ from serpent.game_agent import GameAgent
 from serpent.input_controller import KeyboardKey
 
 from .super_ml import super_agent
+from .super_ml import super_reward
 
 class SerpentSuperAIsaacGameAgent(GameAgent):
     def __init__(self, **kwargs):
@@ -109,27 +110,10 @@ class SerpentSuperAIsaacGameAgent(GameAgent):
             self.environment.new_episode(maximum_steps=3840, reset=False)
 
     def reward_aisaac(self, game_state, game_frame):
-        move_reward = 0.0
-        attack_reward = 0.0
-        if game_state["isaac_alive"]:
-            if game_state["damage_taken"]:
-                damage_taken = game_state["isaac_hps"][1] - game_state["isaac_hps"][0]
-                move_reward += -1.0 * damage_taken
-            else:
-                if game_state["damage_dealt"]:
-                    move_reward += 0.05
-                    attack_reward += 0.05
-                else:
-                    move_reward += 0.01
-            if game_state["boss_dead"]:
-                self.agent.total_wins += 1
-                move_reward += 1.0
-                attack_reward += 1.0
-        else:
-            move_reward += -2.0
+        move_reward, attack_reward = super_reward.create_rewards(game_state, game_frame)
         return move_reward, attack_reward
-    # Callbacks
 
+    # Callbacks
     def after_agent_observe(self):
         self.environment.episode_step()
 
