@@ -31,19 +31,19 @@ class SuperAIsaacAgent(Agent):
 
         self.learning_rate = 5e-5
         self.momentum = 0.5
-        self.save_steps = 128
         self.gamma = 0.75
         self.move_entropy_scale = 5e-3
         self.attack_entropy_scale = 5e-3
         self.surrogate_objective_clip = 0.2
         self.value_loss_coefficient = 0.5
         self.batch_size = 64
-        self.epochs = 2
         self.memory_capacity = 4096
+        self.epochs = 2
 
         # hard-coded whenever I stop and start the program to keep count.
         self.current_episode = 22566
         self.total_wins = 196
+        self.save_steps = 128
         self.batch_episode_count = 0
         self.current_reward = 0.0
         self.boss_hp_total = 0.0
