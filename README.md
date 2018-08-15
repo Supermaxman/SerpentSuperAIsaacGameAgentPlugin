@@ -19,14 +19,14 @@ Convolution2D(filters=256, kernel_size=4, strides=2, padding='same')
 Convolution2D(filters=512, kernel_size=4, strides=2, padding='same')  
 Convolution2D(filters=1024, kernel_size=3, strides=1, padding='same')  
 Fully connected layers used from flattened output of last convolutional layer to action probabilities and values.  
-Modeled each action space seperately. More on this in Rewards section.  
+Modeled each action space separately. More on this in Rewards section.  
 
 ## Rewards
-I found that it made sense to explicitly model the multiple action dimensions for Isaac by splitting up attack and movement actions. This results in the ability to optimize these policies seperately from the same shared model, and also permits seperate rewards for these different action dimensions. The following rules were used for shaping the raw rewards.
+I found that it made sense to explicitly model the multiple action dimensions for Isaac by splitting up attack and movement actions. This results in the ability to optimize these policies separately from the same shared model, and also permits separate rewards for these different action dimensions. The following rules were used for shaping the raw rewards.
 
 English description of rewards:
 
-movement is penalized when damage is taken or isaac dies, while attack is never penalized  
+movement is penalized when damage is taken or Isaac dies, while attack is never penalized  
 no attack reward if damage is taken during same observation  
 if nothing happens then movement is rewarded a little for staying alive  
 Movement and attack are both rewarded when boss damage is done or boss is killed  
@@ -39,7 +39,7 @@ Hyperprarameters are often very difficult to determine. In this section I will p
 ### Learning Rate
 learning_rate = 5e-5  
 Original PPO paper used 1e-4, this model trained with 1e-4 for the first ~150k steps, and then decayed that learning rate to 5e-5.  
-Relatively robust, would reccomend anywhere from 1e-4 to 1e-5, with some benefit from some linear or scheduled decay to a lower value.  
+Relatively robust, would recommend anywhere from 1e-4 to 1e-5, with some benefit from some linear or scheduled decay to a lower value.  
 
 ### Momentum
 momentum = 0.5  
@@ -65,15 +65,15 @@ This represents the acceptable ratio difference between a previous action probab
 
 ### Value Loss Coefficient
 value_loss_coefficient = 0.5  
-This represents how much the value function loss contributes towards the model's combined loss function. The previous paper utilized 0.5-1.0, so I would reccomend somewhere in that range. I found no significant difference between 1.0 and 0.5, so I left it at 0.5.
+This represents how much the value function loss contributes towards the model's combined loss function. The previous paper utilized 0.5-1.0, so I would recommend somewhere in that range. I found no significant difference between 1.0 and 0.5, so I left it at 0.5.
 
 ### Batch Size 
 batch_size = 64  
-This influences your mini-batch size for parameter updates. It can significantly influence your loss surface during training. I would reccomend sticking within a 32-128 range, as smaller batches have been known to improve generalization due to regularizing noise, but smaller batches are also worse estimates of the policy gradient. Smaller batch sizes will also result in more parameter updates per memory capacity being reached.
+This influences your mini-batch size for parameter updates. It can significantly influence your loss surface during training. I would recommend sticking within a 32-128 range, as smaller batches have been known to improve generalization due to regularizing noise, but smaller batches are also worse estimates of the policy gradient. Smaller batch sizes will also result in more parameter updates per memory capacity being reached.
 
 ### Memory Capacity
 memory_capacity = 4096  
-This controls how many observations you will collect before training on the observed data. 2048-8192 are relatively good values for this. Consider increasing if average episode length increases, as that means more of the observations will be from the same few episodes. The larger the memory capacity, the more accurate the estimated policy gradient updates, but also much more episodes per parameter update will need to be collected, along with potential off-policy clipping occuring due to so many parameter updates. Be sure to monitor the PPO clipping ratio to make sure you are not clipping too many updates, as that may result in poor parameter updates and it may also drive your policies more towards uniform due to your entropy loss always being applied for every parameter update.
+This controls how many observations you will collect before training on the observed data. 2048-8192 are relatively good values for this. Consider increasing if average episode length increases, as that means more of the observations will be from the same few episodes. The larger the memory capacity, the more accurate the estimated policy gradient updates, but also much more episodes per parameter update will need to be collected, along with potential off-policy clipping occurring due to so many parameter updates. Be sure to monitor the PPO clipping ratio to make sure you are not clipping too many updates, as that may result in poor parameter updates and it may also drive your policies more towards uniform due to your entropy loss always being applied for every parameter update.
 
 ### Epochs
 epochs = 2  
